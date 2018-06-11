@@ -1,0 +1,18 @@
+{
+  "generator-jhipster": {
+    "appsFolders": [
+      "developer",
+      "developer.web",
+      "gateway",
+      "task",
+      "task.web",
+      "uaa"
+    ],
+    "directoryPath": "../",
+    "gatewayType": "zuul",
+    "monitoring": "no",
+    "serviceDiscoveryType": "eureka",
+    "adminPassword": "admin",
+    "jwtSecretKey": "5b83a04ac8dc96acc8a45f3d69e2636fe5193916"
+  }
+}

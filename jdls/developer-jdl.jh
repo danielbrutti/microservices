@@ -1,0 +1,21 @@
+
+
+entity Developer {
+	name String required,
+    technologies String
+}
+
+// Set service for important classes or the ones we need filtering
+service * with serviceClass
+
+// Use JPA filtering for all
+filter *
+
+
+// Set pagination options
+paginate * with infinite-scroll
+dto * with mapstruct
+
+// microservices
+microservice * with management
+search * with elasticsearch
