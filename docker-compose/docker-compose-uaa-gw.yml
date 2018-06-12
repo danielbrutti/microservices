@@ -18,29 +18,11 @@ services:
         networks:
             - docker-localhost
     
-    gateway-app:
-        image: gateway
-        environment:
-            - SPRING_PROFILES_ACTIVE=prod,swagger
-            - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
-            - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-            - SPRING_DATASOURCE_URL=jdbc:mysql://192.168.0.1:3306/gateway?useUnicode=true&characterEncoding=utf8&useSSL=false
-            - SPRING_DATASOURCE_USERNAME=root
-            - SPRING_DATASOURCE_PASSWORD=root
-            - JHIPSTER_SLEEP=30
-            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
-            - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
-            - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
-            - JHIPSTER_REGISTRY_PASSWORD=admin
-            - JAVA_OPTS=-Xmx512m -Xms256m
-            - _JAVA_OPTIONS=-Xmx512m -Xms256m
-        ports:
-            - 8081:8080
-        networks:
-            - docker-localhost
-
     elasticsearch:
         image: elasticsearch:2.4.6
+        environment:
+            - JAVA_OPTS=-Xmx512m -Xms256m
+            - _JAVA_OPTIONS=-Xmx512m -Xms256m
         ports:
             - 9200:9200
             - 9300:9300
@@ -48,18 +30,25 @@ services:
             - docker-localhost
 
     zookeeper:
-        extends:
-            file: kafka.yml
-            service: zookeeper
+        image: wurstmeister/zookeeper:3.4.6
+        environment:
+            - JAVA_OPTS=-Xmx512m -Xms256m
+            - _JAVA_OPTIONS=-Xmx512m -Xms256m
         ports:
-            - 10000:10000
+        ports:
+            - 2181:2181
         networks:
             - docker-localhost
     
     kafka:
-        extends:
-            file: kafka.yml
-            service: kafka
+        image: wurstmeister/kafka:1.0.0
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: kafka
+            KAFKA_ADVERTISED_PORT: 9092
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_CREATE_TOPICS: "topic-jhipster:1:1"
+        ports:
+            - 9092:9092
         networks:
             - docker-localhost
     
